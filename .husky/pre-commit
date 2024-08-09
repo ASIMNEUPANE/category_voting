@@ -1,1 +1,2 @@
-npm prettier
+npm run prettier
+npm run lint
