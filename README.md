@@ -16,56 +16,57 @@ The Category Voting API is a backend application that allows users to manage cat
 4. MySQL: Relational database management system for storing application data.
 5. Docker: Containerization platform for building, deploying, and running applications.
 6. Docker Compose: Tool for defining and running multi-container Docker applications.
+7. Rate Limiting: Prevents abuse by limiting the number of requests from a single IP address.
+8. Compression: Reduces response sizes and improves performance by compressing HTTP responses.
+9. HTTP Security: Secures HTTP headers with Helmet to protect against common web vulnerabilities.
+10. SSH/HTTPS: Ensures secure communication with SSH for server management and HTTPS for secure web traffic.
 
-# Setup and Installation
-Prerequisites
-Docker
-Docker Compose
+## Setup and Installation
+# Prerequisites
+Before you begin, ensure you have the following installed:
+
+
+1. Docker
+2. Docker Compose
 Docker Setup
-Clone the Repository
 
-bash
-Copy code
-git clone <repository-url>
-cd <project-directory>
-Build and Run the Containers
+# Getting Started
 
+1. Clone the Repository
+First, clone the project repository to your local machine:
+``git clone <git@github.com:ASIMNEUPANE/category_voting.git>``
+
+2.Build and Run the Docker Containers
 Run the following command to build and start the application and MySQL service:
+``docker compose up --build``
+This command will:
 
-``bash
-Copy code
-docker compose up --build``
+. Build Docker images according to the Dockerfile.
+. Start the containers defined in the docker-compose.yml file.
 
-This command will build the Docker images and start the containers based on the configuration in the docker-compose.yml file.
+3. Access the Application
 
-Access the Application
+Once the containers are running, you can access the application at:
 
-The application will be accessible at http://localhost:3333.
-MySQL will be running on port 3307, and it will be accessible through the my_db container.
-Running Migrations and Seeds
+1. Development Environment: ``http://localhost:3333``
+2. Production Environment: ``https://localhost:3333`` (if HTTPS is configured)
 
-Development Environment: Migrations and seeds are run automatically when the container starts.
-Production Environment: You may need to manage migrations and seeds manually or use startup scripts.
-To manually run migrations and seeds, you can use the following commands within the running container:
+MySQL will be available on port 3307 and can be accessed through the my_db container.
 
-bash
-Copy code
-docker exec -it <container-id> npx sequelize-cli db:migrate
-docker exec -it <container-id> npx sequelize-cli db:seed:all
-Project Structure
-src/: Contains the source code for the application.
-models/: Sequelize models for categories and votes.
-controllers/: Business logic for handling API requests.
-migrations/: Sequelize migrations for database schema changes.
-seeders/: Sequelize seeders for populating the database with initial data.
-config/: Configuration files for database and other settings.
-Dockerfile: Dockerfile for building application images.
-docker-compose.yml: Docker Compose configuration for multi-container setup.
+4. Running Migrations and Seeds 
+Migrations and seed data are typically handled when the container starts. However, if needed, you can manually run migrations and seeds with the following commands:
+
+``docker exec -it <container-id> npx sequelize-cli db:migrate``
+``docker exec -it <container-id> npx sequelize-cli db:seed:all``
+
+Replace <container-id> with the actual ID or name of your running container.
 
 ## Challenges Faced
+
+Since this is my first time using Sequelize ORM, the learning curve is steep, and I still don’t know much. However, I’m looking forward to learning more.
+
 1. Handling Hierarchical Data: Managing self-referencing relationships in Sequelize for hierarchical categories required careful planning and execution.
-2. Database Migrations: Ensuring smooth database migrations and seed data integration while maintaining data integrity across development and production environments.
-3. Docker Configuration: Setting up Docker and Docker Compose for both development and production environments with efficient handling of dependencies and migrations.
+2.Database Migrations: Ensuring smooth database migrations and seed data integration while maintaining data integrity across development and production environments.
 
 ## Future Enhancements
 1. User Authentication: Implement user authentication and authorization to manage votes and categories more securely.
