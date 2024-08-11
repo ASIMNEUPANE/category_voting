@@ -1,4 +1,4 @@
-import {  Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 // Custom Error Classes
 class AppError extends Error {
@@ -24,11 +24,7 @@ class ValidationError extends AppError {
 }
 
 // Global Error Handler Middleware
-const ErrorHandler = (
-  err: AppError | Error,
-  req: Request,
-  res: Response,
-) => {
+const ErrorHandler = (err: AppError | Error, req: Request, res: Response, next: NextFunction) => {
   console.error("Error:", err);
 
   // Set default values
@@ -51,5 +47,4 @@ const ErrorHandler = (
 };
 
 // Usage example for custom errors
-
 export { ErrorHandler, AppError, ValidationError };

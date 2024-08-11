@@ -1,25 +1,25 @@
 
 export default {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Categories', {
+    await queryInterface.createTable('Votes', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      parentId: {
+      categoryId: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
           model: 'Categories',
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
+      },
+      userId: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -33,11 +33,17 @@ export default {
       },
     });
 
-    // Add an index on parentId to improve query performance
-    await queryInterface.addIndex('Categories', ['parentId']);
+    // Add a unique index on categoryId and userId to prevent duplicate votes
+    await queryInterface.addIndex('Votes', ['categoryId', 'userId'], {
+      unique: true,
+      name: 'votes_category_id_user_id',
+    });
+
+    // Add an index on userId for better query performance
+    await queryInterface.addIndex('Votes', ['userId']);
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('Categories');
+    await queryInterface.dropTable('Votes');
   },
 };

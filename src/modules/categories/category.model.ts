@@ -1,6 +1,6 @@
-// models/category.ts
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../../DB/db.config";
+import { Vote } from "../vote/vote.model";
 
 interface CategoryAttributes {
   id: number;
@@ -8,8 +8,7 @@ interface CategoryAttributes {
   parentId?: number;
 }
 
-interface CategoryCreationAttributes
-  extends Optional<CategoryAttributes, "id"> {}
+type CategoryCreationAttributes = Optional<CategoryAttributes, "id">;
 
 class Category
   extends Model<CategoryAttributes, CategoryCreationAttributes>
@@ -21,6 +20,16 @@ class Category
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public readonly children?: Category[];
+  public readonly votes?: Vote[];
+
+  public static validateNoCycle (category: Category) {
+    // Validate that a category cannot be its own parent or grandparent, etc.
+    if (category.parentId === category.id) {
+      throw new Error("A category cannot be its own parent.");
+    }
+  }
 }
 
 Category.init(
@@ -41,16 +50,24 @@ Category.init(
         model: "Categories",
         key: "id",
       },
+      onUpdate: "CASCADE",
+      onDelete: "SET NULL",
     },
   },
   {
     sequelize,
     modelName: "Category",
     tableName: "Categories",
+    indexes: [
+      {
+        fields: ["parentId"],
+      },
+    ],
+    hooks: {
+      beforeCreate: (category) => Category.validateNoCycle(category),
+      beforeUpdate: (category) => Category.validateNoCycle(category),
+    },
   },
 );
-
-Category.belongsTo(Category, { as: "parent", foreignKey: "parentId" });
-Category.hasMany(Category, { as: "children", foreignKey: "parentId" });
 
 export { Category };

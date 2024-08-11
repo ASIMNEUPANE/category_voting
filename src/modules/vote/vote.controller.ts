@@ -1,34 +1,69 @@
-// controllers/voteController.ts
-import { Request, Response } from "express";
 import { Vote } from "./vote.model";
-import { Category } from "../categories/category.model";
-import { sequelize } from "../../DB/db.config"; // Adjust the path to your sequelize instance
+import { AppError } from "../../middlewares/ErrorHandler";
 
-export const voteForCategory = async (req: Request, res: Response) => {
-  const { categoryId, userId } = req.body;
+export const createVote = async (
+  categoryId: number,
+  userId: string,
+): Promise<Vote> => {
   try {
+    const existingVote = await Vote.findOne({ where: { categoryId, userId } });
+    if (existingVote) {
+      throw new AppError("User has already voted for this category", 400);
+    }
     const vote = await Vote.create({ categoryId, userId });
-    res.status(201).json(vote);
+    return vote;
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    throw new AppError(
+      "Failed to create vote: " + (error as Error).message,
+      500,
+    );
   }
 };
 
-export const getTopCategories = async (req: Request, res: Response) => {
+export const getVotesForCategory = async (
+  categoryId: number,
+): Promise<Vote[]> => {
   try {
-    const categories = await Category.findAll({
-      attributes: [
-        "id",
-        "name",
-        [sequelize.fn("COUNT", sequelize.col("votes.id")), "voteCount"],
-      ],
-      include: [{ model: Vote, as: "votes" }],
-      group: ["Category.id"],
-      order: [[sequelize.literal("voteCount"), "DESC"]],
-      limit: 3,
-    });
-    res.status(200).json(categories);
+    const votes = await Vote.findAll({ where: { categoryId } });
+    return votes;
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    throw new AppError(
+      "Failed to retrieve votes: " + (error as Error).message,
+      500,
+    );
+  }
+};
+
+export const deleteVote = async (
+  categoryId: number,
+  userId: string,
+): Promise<{ message: string }> => {
+  try {
+    const vote = await Vote.findOne({ where: { categoryId, userId } });
+    if (!vote) {
+      throw new AppError("Vote not found", 404);
+    }
+    await vote.destroy();
+    return { message: "Vote deleted successfully" };
+  } catch (error) {
+    throw new AppError(
+      "Failed to delete vote: " + (error as Error).message,
+      500,
+    );
+  }
+};
+
+export const getUserVotes = async (userId: string): Promise<Vote[]> => {
+  try {
+    const votes = await Vote.findAll({ where: { userId } });
+    if (votes.length === 0) {
+      throw new AppError("No votes found for this user", 404);
+    }
+    return votes;
+  } catch (error) {
+    throw new AppError(
+      "Failed to retrieve user votes: " + (error as Error).message,
+      500,
+    );
   }
 };

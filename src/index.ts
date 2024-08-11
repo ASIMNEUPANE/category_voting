@@ -3,12 +3,21 @@ dotenv.config();
 import express, { Request, Response } from "express";
 import compression from "compression";
 import cors from "cors";
+import { sequelize } from "./DB/db.config";
 
 import { AppError, ErrorHandler } from "./middlewares/ErrorHandler";
 import limiter from "./middlewares/rateLimit";
 import { testConnection } from "./DB/db.config";
 
-// import IndexRouter from "./routes/index";
+import IndexRouter from "./routes/index";
+import "./modules/categories/category.model";
+import "./modules/vote/vote.model";
+import setupAssociations from "./modules/associations";
+
+setupAssociations();
+sequelize.sync({ force: false }).then(() => {
+  console.log("Database synchronized successfully.");
+});
 
 const PORT = parseInt(process.env.PORT || "3333");
 export const app = express();
@@ -21,7 +30,7 @@ try {
   //        JWT_SECRET: string;
   //       PORT: string;
   //       NODE_ENV: string;
-  //       OTP_SECRET: string;
+  //       OTP_SECRET: string;votes
   //       OTP_DURATION: number;
   //       SALT_ROUND: number;
   //     }
@@ -43,7 +52,7 @@ try {
     }),
   );
   app.use(limiter);
-  // app.use("/", IndexRouter);
+  app.use("/", IndexRouter);
   app.use(ErrorHandler);
 
   app.listen(PORT, () => {

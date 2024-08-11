@@ -1,0 +1,11 @@
+import { Category } from "./categories/category.model";
+import { Vote } from "./vote/vote.model";
+
+// Define associations
+export default function setupAssociations() {
+  Category.hasMany(Category, { as: "children", foreignKey: "parentId" });
+  Category.belongsTo(Category, { as: "parent", foreignKey: "parentId" });
+
+  Category.hasMany(Vote, { as: "votes", foreignKey: "categoryId" });
+  Vote.belongsTo(Category, { foreignKey: "categoryId", as: "category" });
+}

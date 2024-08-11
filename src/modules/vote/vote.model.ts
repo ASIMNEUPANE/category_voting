@@ -1,7 +1,5 @@
-// models/vote.ts
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../../DB/db.config";
-import { Category } from "../categories/category.model";
 
 interface VoteAttributes {
   id: number;
@@ -9,7 +7,7 @@ interface VoteAttributes {
   userId: string;
 }
 
-interface VoteCreationAttributes extends Optional<VoteAttributes, "id"> {}
+type VoteCreationAttributes = Optional<VoteAttributes, "id">;
 
 class Vote
   extends Model<VoteAttributes, VoteCreationAttributes>
@@ -37,6 +35,8 @@ Vote.init(
         model: "Categories",
         key: "id",
       },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     },
     userId: {
       type: DataTypes.STRING,
@@ -47,9 +47,16 @@ Vote.init(
     sequelize,
     modelName: "Vote",
     tableName: "Votes",
+    indexes: [
+      {
+        unique: true,
+        fields: ["categoryId", "userId"],
+      },
+      {
+        fields: ["userId"],
+      },
+    ],
   },
 );
-
-Vote.belongsTo(Category, { foreignKey: "categoryId", as: "category" });
 
 export { Vote };
