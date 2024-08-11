@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { ZodError, ZodSchema } from 'zod';
+import { Request, Response, NextFunction } from "express";
+import { ZodError, ZodSchema } from "zod";
 
 const validateRequest = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,7 @@ const validateRequest = (schema: ZodSchema) => {
     } catch (error) {
       if (error instanceof ZodError) {
         return res.status(400).json({
-          error: 'Invalid request data',
+          error: "Invalid request data",
           details: error.errors,
         });
       }

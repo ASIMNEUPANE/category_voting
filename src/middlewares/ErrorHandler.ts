@@ -5,7 +5,7 @@ class AppError extends Error {
   statusCode: number;
   isOperational: boolean;
 
-  constructor (message: string, statusCode: number) {
+  constructor(message: string, statusCode: number) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = true;
@@ -17,14 +17,19 @@ class AppError extends Error {
 class ValidationError extends AppError {
   errors: string[];
 
-  constructor (errors: string[]) {
+  constructor(errors: string[]) {
     super("Validation Error", 400);
     this.errors = errors;
   }
 }
 
 // Global Error Handler Middleware
-const ErrorHandler = (err: AppError | Error, req: Request, res: Response, next: NextFunction) => {
+const ErrorHandler = (
+  err: AppError | Error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   console.error("Error:", err);
 
   // Set default values

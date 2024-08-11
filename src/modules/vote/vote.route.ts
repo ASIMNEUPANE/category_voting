@@ -1,13 +1,23 @@
-import express, { Request, Response } from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { createVoteSchema, getVotesForCategorySchema, deleteVoteSchema, getUserVotesSchema } from '../../schemas/voteSchema';
-import { createVote, getVotesForCategory, deleteVote, getUserVotes } from './vote.controller';
+import express, { Request, Response } from "express";
+import validateRequest from "../../middlewares/validateRequest";
+import {
+  createVoteSchema,
+  getVotesForCategorySchema,
+  deleteVoteSchema,
+  getUserVotesSchema,
+} from "../../schemas/voteSchema";
+import {
+  createVote,
+  getVotesForCategory,
+  deleteVote,
+  getUserVotes,
+} from "./vote.controller";
 
 const router = express.Router();
 
 // Route for creating a vote
 router.post(
-  '/',
+  "/",
   validateRequest(createVoteSchema),
   async (req: Request, res: Response) => {
     const { categoryId, userId } = req.body;
@@ -17,12 +27,12 @@ router.post(
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
     }
-  }
+  },
 );
 
 // Route for getting votes for a category
 router.get(
-  '/votes/:categoryId',
+  "/votes/:categoryId",
   validateRequest(getVotesForCategorySchema),
   async (req: Request, res: Response) => {
     const { categoryId } = req.params;
@@ -32,12 +42,12 @@ router.get(
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
     }
-  }
+  },
 );
 
 // Route for deleting a vote
 router.delete(
-  '/',
+  "/",
   validateRequest(deleteVoteSchema),
   async (req: Request, res: Response) => {
     const { categoryId, userId } = req.body;
@@ -47,12 +57,12 @@ router.delete(
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
     }
-  }
+  },
 );
 
 // Route for getting votes by user
 router.get(
-  '/user-votes/:userId',
+  "/user-votes/:userId",
   validateRequest(getUserVotesSchema),
   async (req: Request, res: Response) => {
     const { userId } = req.params;
@@ -62,7 +72,7 @@ router.get(
     } catch (error) {
       res.status(500).json({ error: (error as Error).message });
     }
-  }
+  },
 );
 
 export { router as voteRoutes };

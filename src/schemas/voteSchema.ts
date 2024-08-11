@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const createVoteSchema = z.object({
   categoryId: z.number().int().positive(),

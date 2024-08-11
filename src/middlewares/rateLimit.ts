@@ -5,6 +5,8 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, //15 min/
   max: 100, //100 req allow for 15 min
   headers: true,
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handler: (req: Request, res: Response, next: NextFunction, options: any) => {
     try {
       if (options.statusCode === 429) {
