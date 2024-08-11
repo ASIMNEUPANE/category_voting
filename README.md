@@ -8,6 +8,9 @@ The Category Voting API is a backend application that allows users to manage cat
 3. Voting Mechanism: Users can vote for categories, and votes are aggregated to determine top categories.
 4. Database Management: Seamless management of categories and votes using Sequelize ORM with MySQL.
 5. Dockerized Application: Easy setup and deployment with Docker, supporting both development and production environments.
+6. Rate Limiting: Implemented rate limiting to prevent abuse and ensure fair usage of API endpoints.
+7. Compression: Added compression to reduce the size of responses and improve performance.
+8. Helmet Security & SSH/HTTPS: Integrated Helmet to secure HTTP headers and enhance application security, while configuring SSH/HTTPS for secure communication and data transfer.
 
 ## Technologies Used
 1. Node.js: JavaScript runtime for building scalable server-side applications.
@@ -34,10 +37,12 @@ Docker Setup
 
 1. Clone the Repository
 First, clone the project repository to your local machine:
+
 ``git clone <git@github.com:ASIMNEUPANE/category_voting.git>``
 
 2.Build and Run the Docker Containers
 Run the following command to build and start the application and MySQL service:
+
 ``docker compose up --build``
 This command will:
 
@@ -49,6 +54,7 @@ This command will:
 Once the containers are running, you can access the application at:
 
 1. Development Environment: ``http://localhost:3333``
+
 2. Production Environment: ``https://localhost:3333`` (if HTTPS is configured)
 
 MySQL will be available on port 3307 and can be accessed through the my_db container.
@@ -57,6 +63,7 @@ MySQL will be available on port 3307 and can be accessed through the my_db conta
 Migrations and seed data are typically handled when the container starts. However, if needed, you can manually run migrations and seeds with the following commands:
 
 ``docker exec -it <container-id> npx sequelize-cli db:migrate``
+
 ``docker exec -it <container-id> npx sequelize-cli db:seed:all``
 
 Replace <container-id> with the actual ID or name of your running container.
@@ -66,10 +73,12 @@ Replace <container-id> with the actual ID or name of your running container.
 Since this is my first time using Sequelize ORM, the learning curve is steep, and I still don’t know much. However, I’m looking forward to learning more.
 
 1. Handling Hierarchical Data: Managing self-referencing relationships in Sequelize for hierarchical categories required careful planning and execution.
+
 2.Database Migrations: Ensuring smooth database migrations and seed data integration while maintaining data integrity across development and production environments.
 
 ## Future Enhancements
 1. User Authentication: Implement user authentication and authorization to manage votes and categories more securely.
+
 2. API Documentation: Generate and maintain API documentation for better developer experience and usage clarity.
 
 Contributing
