@@ -1,5 +1,5 @@
 import { Category } from "./categories/category.model";
-import { Vote } from "./vote/vote.model";
+import { Vote } from "./votes/vote.model";
 
 export default function setupAssociations() {
   Category.hasMany(Category, { as: "children", foreignKey: "parentId" });

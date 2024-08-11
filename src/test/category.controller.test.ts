@@ -6,15 +6,12 @@ import {
   getCategoryById,
   updateCategory,
   deleteCategory,
-  getTopCategories,
-  aggregateVotes,
 } from "../modules/categories/category.controller";
-import { Vote } from "../modules/vote/vote.model";
-import { Op } from "sequelize";
+import { Vote } from "../modules/votes/vote.model";
 
 // Mock the models and controllers
 jest.mock("../modules/categories/category.model");
-jest.mock("../modules/vote/vote.model");
+jest.mock("../modules/votes/vote.model");
 
 jest.mock("../modules/categories/category.controller", () => ({
   ...jest.requireActual("../modules/categories/category.controller"),
@@ -39,57 +36,6 @@ describe("Category Controller Tests", () => {
     await Category.drop();
     await Vote.drop();
   });
-
-  // describe("aggregateVotes", () => {
-  //   it("should correctly aggregate votes for a category with no child categories", async () => {
-  //     (Vote.count as jest.Mock).mockResolvedValue(5);
-  //     (Category.findAll as jest.Mock).mockResolvedValue([]);
-
-  //     const result = await aggregateVotes(1);
-
-  //     expect(result).toBe(5);
-  //     expect(Vote.count).toHaveBeenCalledWith({ where: { categoryId: 1 } });
-  //     expect(Category.findAll).toHaveBeenCalledWith({ where: { parentId: 1 } });
-  //   });
-
-  //   it("should correctly aggregate votes for a category with child categories", async () => {
-  //     (Vote.count as jest.Mock).mockResolvedValue(3);
-  //     const childCategories = [{ id: 2 }, { id: 3 }];
-  //     (Category.findAll as jest.Mock).mockResolvedValue(childCategories);
-
-  //     (aggregateVotes as jest.Mock).mockImplementation(
-  //       async (categoryId: number) => {
-  //         if (categoryId === 2) return 2;
-  //         if (categoryId === 3) return 4;
-  //         return 0;
-  //       },
-  //     );
-
-  //     const result = await aggregateVotes(1);
-
-  //     expect(result).toBe(3 + 2 + 4); // 3 (parent) + 2 (child 2) + 4 (child 3)
-  //     expect(Vote.count).toHaveBeenCalledWith({ where: { categoryId: 1 } });
-  //     expect(Category.findAll).toHaveBeenCalledWith({ where: { parentId: 1 } });
-  //   });
-
-  //   it("should handle errors from Vote.count", async () => {
-  //     (Vote.count as jest.Mock).mockRejectedValue(new Error("Database error"));
-
-  //     await expect(aggregateVotes(1)).rejects.toThrow(
-  //       "Failed to aggregate votes: Database error",
-  //     );
-  //   });
-
-  //   it("should handle errors from Category.findAll", async () => {
-  //     (Category.findAll as jest.Mock).mockRejectedValue(
-  //       new Error("Database error"),
-  //     );
-
-  //     await expect(aggregateVotes(1)).rejects.toThrow(
-  //       "Failed to aggregate votes: Database error",
-  //     );
-  //   });
-  // });
 
   describe("createCategory", () => {
     it("should create and save a category successfully", async () => {
@@ -201,11 +147,11 @@ describe("Category Controller Tests", () => {
       (Category.findByPk as jest.Mock)
         .mockResolvedValueOnce(category)
         .mockResolvedValueOnce(childCategory)
-        .mockResolvedValueOnce(null); // No more children
+        .mockResolvedValueOnce(null);
 
       (Category.findAll as jest.Mock)
-        .mockResolvedValueOnce([childCategory]) // First level children
-        .mockResolvedValueOnce([]); // No children for the child category
+        .mockResolvedValueOnce([childCategory])
+        .mockResolvedValueOnce([]);
 
       (Vote.destroy as jest.Mock).mockResolvedValue(1);
       (childCategory.destroy as jest.Mock).mockResolvedValue({});
@@ -228,37 +174,4 @@ describe("Category Controller Tests", () => {
       await expect(deleteCategory(1)).rejects.toThrow(AppError);
     });
   });
-
-  // describe("getTopCategories", () => {
-  //   it("should return top categories with their vote counts", async () => {
-  //     const categories = [{ id: 1, name: "Technology", parentId: null }];
-  //     const votesCount = 5;
-
-  //     // Mock Category.findAll to return top-level categories
-  //     (Category.findAll as jest.Mock).mockResolvedValue(categories);
-
-  //     // Mock aggregateVotes to return a fixed vote count
-  //     (aggregateVotes as jest.Mock).mockImplementation(async (categoryId: number) => {
-  //       return categoryId === 1 ? votesCount : 0;
-  //     });
-
-  //     const result = await getTopCategories();
-
-  //     expect(result).toEqual([
-  //       { id: 1, name: "Technology", votes: votesCount },
-  //     ]);
-
-  //     expect(Category.findAll).toHaveBeenCalledWith({
-  //       where: { parentId: { [Op.is]: null } },
-  //     });
-  //   });
-
-  //   it("should handle errors during retrieving top categories", async () => {
-  //     (Category.findAll as jest.Mock).mockRejectedValue(
-  //       new Error("Database error"),
-  //     );
-
-  //     await expect(getTopCategories()).rejects.toThrow(AppError);
-  //   });
-  // });
 });

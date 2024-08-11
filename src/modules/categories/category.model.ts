@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../../DB/db.config";
-import { Vote } from "../vote/vote.model";
+import { Vote } from "../votes/vote.model";
 
 interface CategoryAttributes {
   id: number;

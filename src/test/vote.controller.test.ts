@@ -1,14 +1,14 @@
-import { Vote } from "../modules/vote/vote.model";
+import { Vote } from "../modules/votes/vote.model";
 import { AppError } from "../middlewares/ErrorHandler";
 import {
   createVote,
   getVotesForCategory,
   deleteVote,
   getUserVotes,
-} from "../modules/vote/vote.controller";
+} from "../modules/votes/vote.controller";
 
 // Mock the Vote model
-jest.mock("../modules/vote/vote.model");
+jest.mock("../modules/votes/vote.model");
 
 // Mock functions
 jest.spyOn(Vote, "create");
@@ -18,19 +18,18 @@ jest.spyOn(Vote, "destroy");
 
 describe("Vote Controller Tests", () => {
   beforeEach(() => {
-    jest.clearAllMocks(); // Clear mocks before each test
+    jest.clearAllMocks();
   });
 
   afterAll(async () => {
-    await Vote.drop(); // Drop the table if needed
-    // Close database connection if needed
+    await Vote.drop();
   });
 
   // Create Vote Operation
   describe("createVote", () => {
     it("should create and save a vote successfully", async () => {
       const voteData = { id: 1, categoryId: 1, userId: "user123" };
-      (Vote.findOne as jest.Mock).mockResolvedValue(null); // No existing vote
+      (Vote.findOne as jest.Mock).mockResolvedValue(null);
       (Vote.create as jest.Mock).mockResolvedValue(voteData);
 
       const createdVote = await createVote(1, "user123");
@@ -45,7 +44,7 @@ describe("Vote Controller Tests", () => {
     });
 
     it("should handle errors during vote creation if vote already exists", async () => {
-      (Vote.findOne as jest.Mock).mockResolvedValue({}); // Existing vote
+      (Vote.findOne as jest.Mock).mockResolvedValue({});
 
       await expect(createVote(1, "user123")).rejects.toThrow(AppError);
     });

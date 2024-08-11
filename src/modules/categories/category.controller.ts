@@ -1,6 +1,6 @@
 import { Category } from "./category.model";
 import { AppError } from "../../middlewares/ErrorHandler";
-import { Vote } from "../vote/vote.model";
+import { Vote } from "../votes/vote.model";
 import { Op } from "sequelize";
 
 // Utility function to aggregate votes recursively

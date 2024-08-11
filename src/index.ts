@@ -15,7 +15,7 @@ import limiter from "./middlewares/rateLimit";
 import { testConnection } from "./DB/db.config";
 import IndexRouter from "./routes/index";
 import "./modules/categories/category.model";
-import "./modules/vote/vote.model";
+import "./modules/votes/vote.model";
 import setupAssociations from "./modules/associations";
 
 setupAssociations();
@@ -55,8 +55,8 @@ try {
   // HTTPS server setup
 
   // const httpsOptions = {
-  //   key: fs.readFileSync("path/to/your/ssl/private.key"),
-  //   cert: fs.readFileSync("path/to/your/ssl/certificate.crt"),
+  //   key: fs.readFileSync("ssl/private.key"),
+  //   cert: fs.readFileSync("/ssl/certificate.crt"),
   // };
   // https.createServer(httpsOptions, app).listen(PORT, () => {
   //   console.log(`App is running on port ${PORT}`);
