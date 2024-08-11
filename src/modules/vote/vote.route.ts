@@ -15,7 +15,6 @@ import {
 
 const router = express.Router();
 
-// Route for creating a vote
 router.post(
   "/",
   validateRequest(createVoteSchema),
@@ -30,7 +29,6 @@ router.post(
   },
 );
 
-// Route for getting votes for a category
 router.get(
   "/votes/:categoryId",
   validateRequest(getVotesForCategorySchema),
@@ -45,7 +43,6 @@ router.get(
   },
 );
 
-// Route for deleting a vote
 router.delete(
   "/",
   validateRequest(deleteVoteSchema),
@@ -60,7 +57,6 @@ router.delete(
   },
 );
 
-// Route for getting votes by user
 router.get(
   "/user-votes/:userId",
   validateRequest(getUserVotesSchema),

@@ -5,15 +5,12 @@ import { Op } from "sequelize";
 
 // Utility function to aggregate votes recursively
 const aggregateVotes = async (categoryId: number): Promise<number> => {
-  // Get direct votes for this category
   const directVotes = await Vote.count({ where: { categoryId } });
 
-  // Get child categories
   const childCategories = await Category.findAll({
     where: { parentId: categoryId },
   });
 
-  // Aggregate votes for child categories
   let childVotes = 0;
   for (const child of childCategories) {
     childVotes += await aggregateVotes(child.id);
@@ -22,7 +19,6 @@ const aggregateVotes = async (categoryId: number): Promise<number> => {
   return directVotes + childVotes;
 };
 
-// Controller to create a category
 export const createCategory = async (
   name: string,
   parentId?: number,
@@ -41,7 +37,6 @@ export const createCategory = async (
   }
 };
 
-// Controller to get all categories with hierarchical structure
 export const getCategories = async (): Promise<Category[]> => {
   try {
     const categories = await Category.findAll({
@@ -63,7 +58,6 @@ export const getCategories = async (): Promise<Category[]> => {
   }
 };
 
-// Controller to get a category by ID
 export const getCategoryById = async (id: number): Promise<Category> => {
   try {
     const category = await Category.findByPk(id, {
@@ -81,7 +75,6 @@ export const getCategoryById = async (id: number): Promise<Category> => {
   }
 };
 
-// Controller to update a category
 export const updateCategory = async (
   id: number,
   name: string,
@@ -93,9 +86,6 @@ export const updateCategory = async (
       category.name = name;
       category.parentId = parentId;
       await category.save();
-
-      // Handle votes aggregation if parent category changes
-      // or if this category is updated
 
       return category;
     } else {
@@ -109,17 +99,14 @@ export const updateCategory = async (
   }
 };
 
-// Controller to delete a category
 export const deleteCategory = async (
   id: number,
 ): Promise<{ message: string }> => {
   try {
     const category = await Category.findByPk(id);
     if (category) {
-      // Delete all votes for this category
       await Vote.destroy({ where: { categoryId: id } });
 
-      // Find and delete all child categories
       const childCategories = await Category.findAll({
         where: { parentId: id },
       });
@@ -127,7 +114,6 @@ export const deleteCategory = async (
         await deleteCategory(child.id); // Recursive delete
       }
 
-      // Delete the category itself
       await category.destroy();
 
       return { message: "Category deleted successfully" };
@@ -142,15 +128,12 @@ export const deleteCategory = async (
   }
 };
 
-// Controller to get top categories based on vote count
 export const getTopCategories = async (): Promise<Category[]> => {
   try {
-    // Get all top-level categories
     const topCategories = await Category.findAll({
       where: { parentId: { [Op.is]: null } } as never,
     });
 
-    // Aggregate votes and sort top 3 categories
     const categoriesWithVotes = await Promise.all(
       topCategories.map(async (category) => {
         const votes = await aggregateVotes(category.id);
