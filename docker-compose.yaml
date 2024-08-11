@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  my-mysql:
+    image: mysql:5.7
+    container_name: my_db
+    environment:
+      MYSQL_ROOT_PASSWORD: asim
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: asim
+      MYSQL_PASSWORD: asim
+    ports:
+      - "3307:3306"
+    volumes:
+      - my-mysql:/var/lib/mysql
+
+  server:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3333:3333"
+    environment:
+      DB_URL: "mysql://asim:asim@my_db:3306/mydatabase"
+      PORT: "3333"  
+    depends_on:
+      - my-mysql
+
+volumes:
+  my-mysql:

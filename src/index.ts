@@ -45,6 +45,9 @@ try {
       },
     }),
   );
+  app.get("/", (req, res) => {
+    res.send("Hello World");
+  });
   app.use(limiter);
   app.use("/", IndexRouter);
   app.use(ErrorHandler);
