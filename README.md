@@ -11,6 +11,7 @@ The Category Voting API is a backend application that allows users to manage cat
 6. Rate Limiting: Implemented rate limiting to prevent abuse and ensure fair usage of API endpoints.
 7. Compression: Added compression to reduce the size of responses and improve performance.
 8. Helmet Security & SSH/HTTPS: Integrated Helmet to secure HTTP headers and enhance application security, while configuring SSH/HTTPS for secure communication and data transfer.
+9. Testing with Jest: Implemented unit testing using Jest to ensure code reliability and validate backend functionalities. Jest's powerful testing framework helped in creating robust and maintainable test cases for models, controllers, and other critical components.
 
 ## Technologies Used
 1. Node.js: JavaScript runtime for building scalable server-side applications.
@@ -23,15 +24,15 @@ The Category Voting API is a backend application that allows users to manage cat
 8. Compression: Reduces response sizes and improves performance by compressing HTTP responses.
 9. HTTP Security: Secures HTTP headers with Helmet to protect against common web vulnerabilities.
 10. SSH/HTTPS: Ensures secure communication with SSH for server management and HTTPS for secure web traffic.
+11. Jest: A powerful testing framework for unit testing, integration testing, and snapshot testing. Jest's features include mocking capabilities, parallel test running, and code coverage reporting, ensuring code reliability and robustness.
 
 ## Setup and Installation
 # Prerequisites
-Before you begin, ensure you have the following installed:
 
+Before you begin, ensure you have the following installed:
 
 1. Docker
 2. Docker Compose
-Docker Setup
 
 # Getting Started
 
