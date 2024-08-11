@@ -9,7 +9,6 @@ import {
 } from "../modules/categories/category.controller";
 import { Vote } from "../modules/votes/vote.model";
 
-// Mock the models and controllers
 jest.mock("../modules/categories/category.model");
 jest.mock("../modules/votes/vote.model");
 
@@ -18,7 +17,6 @@ jest.mock("../modules/categories/category.controller", () => ({
   aggregateVotes: jest.fn(),
 }));
 
-// Spy on Sequelize methods
 jest.spyOn(Category, "create");
 jest.spyOn(Category, "findAll");
 jest.spyOn(Category, "findByPk");
@@ -28,11 +26,10 @@ jest.spyOn(Vote, "count");
 
 describe("Category Controller Tests", () => {
   beforeEach(() => {
-    jest.clearAllMocks(); // Clear mocks before each test
+    jest.clearAllMocks(); 
   });
 
   afterAll(async () => {
-    // Drop the tables and close connections if needed
     await Category.drop();
     await Vote.drop();
   });
@@ -143,7 +140,6 @@ describe("Category Controller Tests", () => {
       const category = { id: 1, destroy: jest.fn() };
       const childCategory = { id: 2, destroy: jest.fn() };
 
-      // First call to findByPk returns the parent category
       (Category.findByPk as jest.Mock)
         .mockResolvedValueOnce(category)
         .mockResolvedValueOnce(childCategory)

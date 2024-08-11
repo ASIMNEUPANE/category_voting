@@ -7,10 +7,8 @@ import {
   getUserVotes,
 } from "../modules/votes/vote.controller";
 
-// Mock the Vote model
 jest.mock("../modules/votes/vote.model");
 
-// Mock functions
 jest.spyOn(Vote, "create");
 jest.spyOn(Vote, "findOne");
 jest.spyOn(Vote, "findAll");

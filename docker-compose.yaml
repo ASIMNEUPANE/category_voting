@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   my-mysql:
@@ -24,7 +24,7 @@ services:
       - "3333:3333"
     environment:
       DB_URL: "mysql://asim:asim@my_db:3306/mydatabase"
-      PORT: "3333"  
+      PORT: "3333"
     depends_on:
       - my-mysql
 

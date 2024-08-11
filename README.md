@@ -3,6 +3,7 @@
 The Category Voting API is a backend application that allows users to manage categories and vote on them. The project uses Node.js, Express, and Sequelize ORM to provide a robust and scalable solution for handling hierarchical categories and user votes. The application is designed to support both development and production environments using Docker.
 
 # Features
+
 1. CRUD Operations: Create, Read, Update, and Delete operations for categories.
 2. Hierarchical Categories: Support for nested categories (parent, child, grandchild).
 3. Voting Mechanism: Users can vote for categories, with votes aggregated to determine top categories.
@@ -11,7 +12,7 @@ The Category Voting API is a backend application that allows users to manage cat
 6. Rate Limiting: Prevents abuse by limiting API requests.
 7. Compression: Reduces response sizes for better performance.
 8. Helmet Security & SSH/HTTPS: Secures HTTP headers and communication.
-9. Testing with Jest: Ensures code reliability through unit testing. 
+9. Testing with Jest: Ensures code reliability through unit testing.
 
 ## Technologies Used
 
@@ -29,9 +30,8 @@ The Category Voting API is a backend application that allows users to manage cat
 12. ESLint & Prettier: Combines static code analysis and automatic formatting.
 13. TypeScript: Adds static typing to JavaScript for enhanced code quality.
 
-
-
 ## Setup and Installation
+
 # Prerequisites
 
 Ensure you have the following installed:
@@ -43,11 +43,11 @@ Ensure you have the following installed:
 
 1. Clone the Repository
 
-``git clone <git@github.com:ASIMNEUPANE/category_voting.git>``
+`git clone <git@github.com:ASIMNEUPANE/category_voting.git>`
 
 2.Build and Run the Docker Containers
 
-``docker compose up --build``
+`docker compose up --build`
 
 This command builds Docker images and starts the containers defined in docker-compose.yml.
 
@@ -55,17 +55,17 @@ This command builds Docker images and starts the containers defined in docker-co
 
 Once the containers are running, you can access the application at:
 
-1. Development Environment: ``http://localhost:3333``
+1. Development Environment: `http://localhost:3333`
 
-2. Production Environment: ``https://localhost:3333`` (if HTTPS is configured)
+2. Production Environment: `https://localhost:3333` (if HTTPS is configured)
 
 MySQL will be available on port 3307 and can be accessed through the my_db container.
 
-4. Running Migrations and Seeds 
+4. Running Migrations and Seeds
 
-``docker exec -it <container-id> npx sequelize-cli db:migrate``
+`docker exec -it <container-id> npx sequelize-cli db:migrate`
 
-``docker exec -it <container-id> npx sequelize-cli db:seed:all``
+`docker exec -it <container-id> npx sequelize-cli db:seed:all`
 
 Replace <container-id> with the actual ID or name of your running container.
 
@@ -76,6 +76,7 @@ Replace <container-id> with the actual ID or name of your running container.
 2. Handling Hierarchical Data: Managing self-referencing relationships required careful planning.
 
 ## Future Enhancements
+
 1. User Authentication: Implement user authentication and authorization to manage votes and categories more securely.
 
 2. API Documentation: Generate and maintain API documentation for better developer experience and usage clarity.
@@ -85,5 +86,5 @@ Replace <container-id> with the actual ID or name of your running container.
 Feel free to open issues or submit pull requests if you have suggestions or improvements for the project.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for details.
 
+This project is licensed under the MIT License. See the LICENSE file for details.
