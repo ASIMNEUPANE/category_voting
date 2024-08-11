@@ -4,7 +4,7 @@ import { Vote } from "../vote/vote.model";
 import { Op } from "sequelize";
 
 // Utility function to aggregate votes recursively
-const aggregateVotes = async (categoryId: number): Promise<number> => {
+export const aggregateVotes = async (categoryId: number): Promise<number> => {
   const directVotes = await Vote.count({ where: { categoryId } });
 
   const childCategories = await Category.findAll({
@@ -25,9 +25,6 @@ export const createCategory = async (
 ): Promise<Category> => {
   try {
     const category = await Category.create({ name, parentId });
-    if (!category) {
-      throw new AppError("Failed to create category", 404);
-    }
     return category;
   } catch (error) {
     throw new AppError(

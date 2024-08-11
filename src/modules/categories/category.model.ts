@@ -24,7 +24,7 @@ class Category
   public readonly children?: Category[];
   public readonly votes?: Vote[];
 
-  public static validateNoCycle (category: Category) {
+  public static validateNoCycle(category: Category) {
     if (category.parentId === category.id) {
       throw new Error("A category cannot be its own parent.");
     }

@@ -1,14 +1,18 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+
 import express, { Request, Response } from "express";
+import helmet from "helmet";
+import https from "https";
+import fs from "fs";
 import compression from "compression";
 import cors from "cors";
 import { sequelize } from "./DB/db.config";
 
 import { AppError, ErrorHandler } from "./middlewares/ErrorHandler";
 import limiter from "./middlewares/rateLimit";
-import { testConnection } from "./DB/db.config";
 
+import { testConnection } from "./DB/db.config";
 import IndexRouter from "./routes/index";
 import "./modules/categories/category.model";
 import "./modules/vote/vote.model";
@@ -19,23 +23,13 @@ sequelize.sync({ force: false }).then(() => {
   console.log("Database synchronized successfully.");
 });
 
-const PORT = parseInt(process.env.PORT || "3333");
+const PORT = parseInt(process.env.PORT || "3000");
 export const app = express();
 
 try {
   testConnection();
-  // declare global {
-  //   namespace NodeJS {
-  //     interface ProcessEnv {
-  //        JWT_SECRET: string;
-  //       PORT: string;
-  //       NODE_ENV: string;
-  //       OTP_SECRET: string;votes
-  //       OTP_DURATION: number;
-  //       SALT_ROUND: number;
-  //     }
-  //   }
-  // }
+
+  app.use(helmet());
   app.use(express.json());
   app.use(cors());
 
@@ -54,6 +48,16 @@ try {
   app.use(limiter);
   app.use("/", IndexRouter);
   app.use(ErrorHandler);
+
+  // HTTPS server setup
+
+  // const httpsOptions = {
+  //   key: fs.readFileSync("path/to/your/ssl/private.key"),
+  //   cert: fs.readFileSync("path/to/your/ssl/certificate.crt"),
+  // };
+  // https.createServer(httpsOptions, app).listen(PORT, () => {
+  //   console.log(`App is running on port ${PORT}`);
+  // });
 
   app.listen(PORT, () => {
     console.log(`app is running on port ${PORT}`);
