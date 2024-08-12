@@ -30,7 +30,7 @@ router.post(
 );
 
 router.get(
-  "/votes/:categoryId",
+  "/:categoryId",
   validateRequest(getVotesForCategorySchema),
   async (req: Request, res: Response) => {
     const { categoryId } = req.params;

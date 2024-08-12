@@ -26,7 +26,7 @@ jest.spyOn(Vote, "count");
 
 describe("Category Controller Tests", () => {
   beforeEach(() => {
-    jest.clearAllMocks(); 
+    jest.clearAllMocks();
   });
 
   afterAll(async () => {
